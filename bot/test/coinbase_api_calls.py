@@ -6,7 +6,7 @@ import csv
 from datetime import datetime as dt
 import hmac
 import hashlib
-import pprint
+from pprint import pprint
 
 client = Client(config.api_key, config.api_secret)
 print(client)
@@ -50,25 +50,31 @@ for account in accounts.data:
 # User info 
 print(client.get_auth_info())
 
-# Products 
-conn    = http.client.HTTPSConnection("api.coinbase.com")
-auth    = Auth(config.api_key,config.api_secret,"")
-headers = auth.generate(method="GET",path="/api/v3/brokerage/products")
-payload = ''
-print(headers)
+# Transactions 
+#pprint(accounts)
+pprint(client.get_transactions( "4585aff9-e099-59b0-906f-3802bfc4d99f"))
 
-try: 
-    conn.request("GET", "/api/v3/brokerage/products", payload, headers)
-    res    = conn.getresponse()
-    data   = json.loads(res.read().decode("utf-8"))
-    print(type(data))
-    print(len(data))
-    print(data.keys())
-    print(data["products"][0])
+# All methods in client object 
+# print(dir(client))
+
+# Products 
+# conn    = http.client.HTTPSConnection("api.coinbase.com")
+# auth    = Auth(config.api_key,config.api_secret,"")
+# headers = auth.generate(method="GET",path="/api/v3/brokerage/products")
+# payload = ''
+# print(headers)
+
+# try: 
+#     conn.request("GET", "/api/v3/brokerage/products", payload, headers)
+#     res    = conn.getresponse()
+#     data   = json.loads(res.read().decode("utf-8"))
+#     print(type(data))
+#     print(len(data))
+#     print(data.keys())
+#     print(data["products"][0])
     
+# except Exception as x:
+#     print(x) 
     
-    
-except Exception as x:
-    print(x) 
-    
-conn.close()
+# conn.close()
+
