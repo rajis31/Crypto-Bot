@@ -31,7 +31,8 @@ class Auth():
         headers["CB-ACCESS-KEY"]        = self.API_KEY
         headers["CB-ACCESS-SIGN"]       = signature_hex
         headers["CB-ACCESS-TIMESTAMP"]  = timestamp
-        headers["CB-ACCESS-PASSPHRASE"] = self.PASSPHRASE      
+        headers["CB-ACCESS-PASSPHRASE"] = self.PASSPHRASE  
+        headers["User-Agent"]           = "Something"         
         headers["Content-Type"]         = 'application/json'
         return headers
     
@@ -48,33 +49,52 @@ for account in accounts.data:
 #     print(account.get_transactions())
 
 # User info 
-print(client.get_auth_info())
+#pprint(client.get_auth_info())
 
 # Transactions 
 #pprint(accounts)
-pprint(client.get_transactions( "4585aff9-e099-59b0-906f-3802bfc4d99f"))
+#pprint(client.get_transactions( "4585aff9-e099-59b0-906f-3802bfc4d99f"))
 
 # All methods in client object 
-# print(dir(client))
+pprint(dir(client))
 
 # Products 
-# conn    = http.client.HTTPSConnection("api.coinbase.com")
-# auth    = Auth(config.api_key,config.api_secret,"")
-# headers = auth.generate(method="GET",path="/api/v3/brokerage/products")
-# payload = ''
-# print(headers)
+conn    = http.client.HTTPSConnection("api.coinbase.com")
+auth    = Auth(config.api_key,config.api_secret,"")
+headers = auth.generate(method="GET",path="/api/v3/brokerage/products")
+payload = ''
+print(headers)
 
-# try: 
-#     conn.request("GET", "/api/v3/brokerage/products", payload, headers)
-#     res    = conn.getresponse()
-#     data   = json.loads(res.read().decode("utf-8"))
-#     print(type(data))
-#     print(len(data))
-#     print(data.keys())
-#     print(data["products"][0])
+try: 
+    conn.request("GET", "/api/v3/brokerage/products", payload, headers)
+    res    = conn.getresponse()
+    data   = json.loads(res.read().decode("utf-8"))
+    print(type(data))
+    print(len(data))
+    print(data.keys())
+    print(data["products"][0])
     
-# except Exception as x:
-#     print(x) 
+except Exception as x:
+    print(x) 
     
-# conn.close()
+conn.close()
 
+# OHLC Data
+# pprint(client.get_exchange_rates())
+# pprint(client.get_historic_prices())
+print("OHLC Data")
+conn    = http.client.HTTPSConnection("api.exchange.coinbase.com")
+auth    = Auth(config.api_key,config.api_secret,"")
+headers = auth.generate(method="GET",path="/products/BTC-USD/candles?granularity=3600")
+payload =''
+
+try: 
+    conn.request("GET", "/products/BTC-USD/candles?granularity=3600", payload, headers)
+    res    = conn.getresponse()
+    data   = json.loads(res.read().decode("utf-8"))
+    pprint(data)
+    
+except Exception as x:
+    print(x) 
+    
+conn.close()
