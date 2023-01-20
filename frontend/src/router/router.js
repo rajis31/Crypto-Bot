@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 // Pages
 import Home from "../pages/Home.vue";
+import Login from "../pages/Login.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -10,6 +11,12 @@ const router = createRouter({
             path: "/",
             name: "home",
             component: Home,
+            meta: { isGuest: true }
+        },
+        {
+            path: "/login",
+            name: "login",
+            component: Login,
             meta: { isGuest: true }
         },
     ],
