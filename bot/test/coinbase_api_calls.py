@@ -89,10 +89,19 @@ headers = auth.generate(method="GET",path="/products/BTC-USD/candles?granularity
 payload =''
 
 try: 
-    conn.request("GET", "/products/BTC-USD/candles?granularity=3600", payload, headers)
+    now = int(dt.now().timestamp())-10000
+    print(now)
+    conn.request("GET", f"/products/BTC-USD/candles?granularity=3600&start={now}", payload, headers)
     res    = conn.getresponse()
     data   = json.loads(res.read().decode("utf-8"))
     pprint(data)
+    
+    #time   = bucket start time
+    #low    = lowest price during the bucket interval
+    #high   = highest price during the bucket interval
+    #open   = opening price (first trade) in the bucket interval
+    #close  = closing price (last trade) in the bucket interval
+    #volume = volume of trading activity during the bucket interval
     
 except Exception as x:
     print(x) 
